@@ -12,3 +12,7 @@ dependencies = [
     "ruff>=0.12.4",
     "streamlit>=1.47.0",
 ]
+
+
+[tool.uv]
+package-mode = false
