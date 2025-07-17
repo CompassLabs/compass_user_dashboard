@@ -1,0 +1,12 @@
+[project]
+name = "cyber-dashboard"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.13"
+dependencies = [
+    "httpx>=0.28.1",
+    "logfire>=3.24.2",
+    "polars>=1.31.0",
+    "pyarrow>=20.0.0",
+    "streamlit>=1.47.0",
+]
