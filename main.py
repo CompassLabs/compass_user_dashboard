@@ -74,18 +74,19 @@ if len(date_range) == 2:
     st.markdown("### Overall")
 
     data = endpoint_stats["duration"]
+    p95 = np.percentile(data, 95)
     trace = go.Box(
         x=data,
         name="",
         boxpoints="all",
         jitter=0.5,
         pointpos=0.0,
+        marker_color="green" if p95 < 500 else "red",  # Color of box
     )
 
     layout = go.Layout(title=None, xaxis=dict(title=f"Overall [ms]"))
     fig = go.Figure(data=trace, layout=layout)
 
-    p95 = np.percentile(data, 95)
     annotations = [
         dict(
             x=p95,
@@ -102,13 +103,12 @@ if len(date_range) == 2:
     fig.update_layout(
         annotations=annotations,
         margin=dict(t=10, b=10),
-        height=200,
         yaxis=dict(showticklabels=False),
     )
 
     fig.update_layout(
         margin=dict(t=10, b=10),  # top and bottom margin minimized
-        height=150,  # optional: control overall height
+        height=250,  # optional: control overall height
     )
 
     # Display in Streamlit without the menu bar
@@ -120,17 +120,18 @@ if len(date_range) == 2:
     my_grid = grid(4, 4, vertical_align="bottom")
     for path in distinct_paths:
         data = endpoint_stats[endpoint_stats.url_path == path]["duration"]
+        p50 = np.percentile(data, 50)
+        p95 = np.percentile(data, 95)
         trace = go.Box(
             x=data,
             name="",
             boxpoints="all",
             jitter=0.5,
             pointpos=0.0,
+            marker_color="green" if p95 < 500 else "red",  # Color of box
         )
 
         p05 = np.percentile(data, 5)
-        p50 = np.percentile(data, 50)
-        p95 = np.percentile(data, 95)
 
         layout = go.Layout(title=None, xaxis=dict(title=f"{path} [ms]"))
         fig = go.Figure(data=trace, layout=layout)
