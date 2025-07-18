@@ -5,10 +5,14 @@ import polars as pl
 from logfire.query_client import AsyncLogfireQueryClient
 from panels.response_codes import get_reponse_codes_table
 from panels.distinct_paths import get_distinct_paths
+from panels.distinct_users import get_distinct_users
 import streamlit as st
 from datetime import datetime, timedelta
 from streamlit_extras.grid import grid
 import plotly.graph_objects as go
+
+users = asyncio.run(get_distinct_users())
+users = [u for u in users if u]
 
 st.set_page_config(
     page_title="Compass user dashboard",
@@ -22,7 +26,7 @@ st.title("Compass user dashboard")
 
 col1, col2 = st.columns(2)
 with col1:
-    user_email = st.text_input(label="email", value="aidar@compasslabs.ai")
+    user_email = st.selectbox(label="email", options=sorted(list(users)), index=2)
 with col2:
     date_range = st.date_input(
         label="Select date range",
