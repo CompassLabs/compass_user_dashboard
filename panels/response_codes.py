@@ -35,7 +35,7 @@ ORDER BY
                 sql=query, min_timestamp=min_datetime, max_timestamp=max_datetime
             )
         )
-        return df_from_arrow
+        return df_from_arrow.to_pandas()
 
 
 if __name__ == "__main__":
