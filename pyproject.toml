@@ -1,7 +1,7 @@
 [project]
 name = "compass-user-dashboard"
 version = "0.1.0"
-description = "TBD
+description = "TBD"
 requires-python = ">=3.13"
 dependencies = [
     "dotenv>=0.9.9",

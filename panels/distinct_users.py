@@ -14,7 +14,6 @@ FROM
   records
 WHERE
     span_name LIKE 'GET%' OR span_name LIKE 'POST%'
--- ORDER BY attributes ->> 'http.request.header.x_user_email' ->> 0
     """
 
     async with AsyncLogfireQueryClient(

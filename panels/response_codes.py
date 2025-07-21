@@ -2,7 +2,7 @@ import polars as pl
 from logfire.query_client import AsyncLogfireQueryClient
 from dotenv import load_dotenv
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 load_dotenv()
 
@@ -41,4 +41,4 @@ ORDER BY
 if __name__ == "__main__":
     import asyncio
 
-    asyncio.run(get_reponse_codes_table())
+    asyncio.run(get_reponse_codes_table(min_datetime=datetime.today()- timedelta(days=14), max_datetime=datetime.today(), user_email='aidar@compasslabs.ai'))

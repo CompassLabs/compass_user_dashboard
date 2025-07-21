@@ -6,6 +6,7 @@ from logfire.query_client import AsyncLogfireQueryClient
 from panels.response_codes import get_reponse_codes_table
 from panels.distinct_paths import get_distinct_paths
 from panels.distinct_users import get_distinct_users
+from panels.durations import get_durations
 import streamlit as st
 from datetime import datetime, timedelta
 from streamlit_extras.grid import grid
@@ -30,7 +31,7 @@ with col1:
 with col2:
     date_range = st.date_input(
         label="Select date range",
-        value=[datetime.today() - timedelta(days=1), datetime.today()],
+        value=[datetime.today() - timedelta(days=14), datetime.today()],
     )
 st.markdown("---")
 
@@ -44,6 +45,10 @@ if len(date_range) == 2:
         )
         endpoint_stats = asyncio.run(
             get_distinct_paths(min_datetime, max_datetime, user_email)
+        )
+
+        durations = asyncio.run(
+            get_durations(min_datetime, max_datetime, user_email)
         )
         distinct_paths = set(endpoint_stats["url_path"])
 
@@ -77,7 +82,7 @@ if len(date_range) == 2:
     # Create a Plotly figure
     st.markdown("### Overall")
 
-    data = endpoint_stats["duration"]
+    data = np.concatenate(durations['durations'].values)
     p95 = np.percentile(data, 95)
     trace = go.Box(
         x=data,
@@ -123,7 +128,8 @@ if len(date_range) == 2:
     st.markdown("### Per route")
     my_grid = grid(4, 4, vertical_align="bottom")
     for path in distinct_paths:
-        data = endpoint_stats[endpoint_stats.url_path == path]["duration"]
+        data = durations[durations.url_path == path]["durations"]
+        data = list(durations[durations.url_path == path]['durations'].values)[0]
         p50 = np.percentile(data, 50)
         p95 = np.percentile(data, 95)
         trace = go.Box(
