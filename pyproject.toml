@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "TBD"
 requires-python = ">=3.13"
 dependencies = [
+    "bcrypt>=4.3.0",
     "dotenv>=0.9.9",
     "httpx>=0.28.1",
     "logfire>=3.24.2",
