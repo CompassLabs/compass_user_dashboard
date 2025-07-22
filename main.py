@@ -1,16 +1,15 @@
 import asyncio
-from io import StringIO
+from datetime import datetime, timedelta
+
 import numpy as np
-import polars as pl
-from logfire.query_client import AsyncLogfireQueryClient
-from panels.response_codes import get_reponse_codes_table
+import plotly.graph_objects as go
+import streamlit as st
+from streamlit_extras.grid import grid
+
 from panels.distinct_paths import get_distinct_paths
 from panels.distinct_users import get_distinct_users
 from panels.durations import get_durations
-import streamlit as st
-from datetime import datetime, timedelta
-from streamlit_extras.grid import grid
-import plotly.graph_objects as go
+from panels.response_codes import get_reponse_codes_table
 
 users = asyncio.run(get_distinct_users())
 users = [u for u in users if u]
@@ -32,6 +31,7 @@ with col2:
     date_range = st.date_input(
         label="Select date range",
         value=[datetime.today() - timedelta(days=14), datetime.today()],
+        help='This is the range of dates you want to get data for.'
     )
 st.markdown("---")
 
@@ -47,22 +47,24 @@ if len(date_range) == 2:
             get_distinct_paths(min_datetime, max_datetime, user_email)
         )
 
-        durations = asyncio.run(
-            get_durations(min_datetime, max_datetime, user_email)
-        )
+        durations = asyncio.run(get_durations(min_datetime, max_datetime, user_email))
         distinct_paths = set(endpoint_stats["url_path"])
 
     cols = st.columns(4)
     cols[0].metric("Total requests", df_response_codes.num_seen.sum())
     cols[1].metric(
         "Error rate",
-        f"{round(df_response_codes[df_response_codes.response_code != '200'].num_seen.sum() / df_response_codes.num_seen.sum() * 100, 1)} %",
+        f"{round(df_response_codes[df_response_codes.response_code != 200].num_seen.sum() / df_response_codes.num_seen.sum() * 100, 1)} %",
     )
-    cols[2].metric("95 percentile response", "200 ms")
-    cols[3].metric(
-        "Total cost",
-        f"{df_response_codes[df_response_codes.response_code == '200'].num_seen.sum() * 0.50} $",
-    )
+    data = np.concatenate(durations["durations"].values)
+    p90 = np.percentile(data, 90)
+    p50 = np.percentile(data, 50)
+    cols[2].metric("90 percentile response time", f"{int(p90)} ms")
+    cols[3].metric("50 percentile response time", f"{int(p50)} ms")
+    # cols[3].metric(
+    #     "Total cost",
+    #     f"{df_response_codes[df_response_codes.response_code == '200'].num_seen.sum() * 0.50} $",
+    # )
 
     st.markdown("---")
 
@@ -70,8 +72,8 @@ if len(date_range) == 2:
     cols[0].subheader("Overall Stats")
     cols[0].dataframe(df_response_codes)
     cols[1].subheader("Endpoint stats")
-    cols[1].selectbox(label="endpoint", options=distinct_paths)
-    cols[1].dataframe(df_response_codes)
+    url_path=cols[1].selectbox(label="endpoint", options=distinct_paths)
+    cols[1].dataframe(df_response_codes[df_response_codes.url_path==url_path])
 
     st.markdown("---")
     st.subheader("Response times")
@@ -82,7 +84,7 @@ if len(date_range) == 2:
     # Create a Plotly figure
     st.markdown("### Overall")
 
-    data = np.concatenate(durations['durations'].values)
+    data = np.concatenate(durations["durations"].values)
     p95 = np.percentile(data, 95)
     trace = go.Box(
         x=data,
@@ -129,7 +131,7 @@ if len(date_range) == 2:
     my_grid = grid(4, 4, vertical_align="bottom")
     for path in distinct_paths:
         data = durations[durations.url_path == path]["durations"]
-        data = list(durations[durations.url_path == path]['durations'].values)[0]
+        data = list(durations[durations.url_path == path]["durations"].values)[0]
         p50 = np.percentile(data, 50)
         p95 = np.percentile(data, 95)
         trace = go.Box(
@@ -168,15 +170,3 @@ if len(date_range) == 2:
         my_grid.plotly_chart(
             fig, key=path, use_container_width=True, config={"displayModeBar": False}
         )
-
-    # my_grid.plotly_chart(fig, key="1",  use_container_width=True, config={"displayModeBar": False})
-    # my_grid.plotly_chart(fig, key="2",  use_container_width=True, config={"displayModeBar": False})
-    # my_grid.plotly_chart(fig, key="3",  use_container_width=True, config={"displayModeBar": False})
-    # my_grid.plotly_chart(fig, key="4",  use_container_width=True, config={"displayModeBar": False})
-    # my_grid.dataframe(df_response_codes)
-    # my_grid.dataframe(df_response_codes)
-    # my_grid.dataframe(df_response_codes)
-    # my_grid.dataframe(df_response_codes)
-    # my_grid.dataframe(df_response_codes)
-    # my_grid.dataframe(df_response_codes)
-    # my_grid.dataframe(df_response_codes)

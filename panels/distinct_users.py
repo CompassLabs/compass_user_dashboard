@@ -1,7 +1,8 @@
-import polars as pl
-from logfire.query_client import AsyncLogfireQueryClient
-from dotenv import load_dotenv
 import os
+
+import polars as pl
+from dotenv import load_dotenv
+from logfire.query_client import AsyncLogfireQueryClient
 
 load_dotenv()
 
@@ -17,7 +18,7 @@ WHERE
     """
 
     async with AsyncLogfireQueryClient(
-        read_token=os.environ.get("LOGFIRE_API_KEY")
+        read_token=os.environ.get("LOGFIRE_API_KEY", "")
     ) as client:
         df_from_arrow = pl.from_arrow(await client.query_arrow(sql=query))
         df = df_from_arrow.to_pandas()
