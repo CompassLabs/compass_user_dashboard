@@ -2,6 +2,8 @@ import asyncio
 from io import StringIO
 import numpy as np
 import polars as pl
+import hmac
+import os
 from logfire.query_client import AsyncLogfireQueryClient
 from panels.response_codes import get_reponse_codes_table
 from panels.distinct_paths import get_distinct_paths
@@ -13,6 +15,41 @@ import plotly.graph_objects as go
 
 users = asyncio.run(get_distinct_users())
 users = [u for u in users if u]
+
+
+def check_password():
+
+    # Do not require password for non-user-sepcific dashboard.
+    fixed_user=os.environ.get("FIXED_USER", None)
+    if not fixed_user:
+        return True
+
+
+    def password_entered():
+        # If you use .streamlit/secrets.toml, replace os.environ.get with st.secrets["STREAMLIT_PASSWORD"]
+        if hmac.compare_digest(st.session_state["password"], os.environ.get("FIXED_USER_PASSWORD", "")):
+            st.session_state["password_correct"] = True
+            del st.session_state["password"]
+        else:
+            st.session_state["password_correct"] = False
+
+    # Return True if the password is validated.
+    if st.session_state.get("password_correct", False):
+        return True
+
+    st.info(f"Please enter the password")
+    # Show input for password.
+    st.text_input(
+        "Password", type="password", on_change=password_entered, key="password"
+    )
+    if "password_correct" in st.session_state:
+        st.error("😕 Password incorrect")
+    return False
+
+if not check_password():
+    st.stop()
+
+
 
 st.set_page_config(
     page_title="Compass user dashboard",
@@ -30,7 +67,7 @@ with col1:
 with col2:
     date_range = st.date_input(
         label="Select date range",
-        value=[datetime.today() - timedelta(days=1), datetime.today()],
+        value=[datetime.today() - timedelta(days=31), datetime.today()],
     )
 st.markdown("---")
 
