@@ -1,0 +1,3 @@
+ruff format .
+isort .
+#pyright .

@@ -137,6 +137,47 @@ wheels = [
 ]
 
 [[package]]
+name = "compass-user-dashboard"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "dotenv" },
+    { name = "httpx" },
+    { name = "logfire" },
+    { name = "matplotlib" },
+    { name = "polars" },
+    { name = "pyarrow" },
+    { name = "ruff" },
+    { name = "streamlit" },
+    { name = "streamlit-extras" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "isort" },
+    { name = "pyright" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "dotenv", specifier = ">=0.9.9" },
+    { name = "httpx", specifier = ">=0.28.1" },
+    { name = "logfire", specifier = ">=3.24.2" },
+    { name = "matplotlib", specifier = ">=3.10.3" },
+    { name = "polars", specifier = ">=1.31.0" },
+    { name = "pyarrow", specifier = ">=20.0.0" },
+    { name = "ruff", specifier = ">=0.12.4" },
+    { name = "streamlit", specifier = ">=1.47.0" },
+    { name = "streamlit-extras", specifier = ">=0.6.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "isort", specifier = ">=6.0.1" },
+    { name = "pyright", specifier = ">=1.1.403" },
+]
+
+[[package]]
 name = "contourpy"
 version = "1.3.2"
 source = { registry = "https://pypi.org/simple" }
@@ -165,35 +206,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/78/73/69dd9a024444489e22d86108e7b913f3528f56cfc312b5c5727a44188471/contourpy-1.3.2-cp313-cp313t-musllinux_1_2_x86_64.whl", hash = "sha256:e298e7e70cf4eb179cc1077be1c725b5fd131ebc81181bf0c03525c8abc297fd", size = 1372168 },
     { url = "https://files.pythonhosted.org/packages/0f/1b/96d586ccf1b1a9d2004dd519b25fbf104a11589abfd05484ff12199cca21/contourpy-1.3.2-cp313-cp313t-win32.whl", hash = "sha256:d0e589ae0d55204991450bb5c23f571c64fe43adaa53f93fc902a84c96f52fe1", size = 189550 },
     { url = "https://files.pythonhosted.org/packages/b0/e6/6000d0094e8a5e32ad62591c8609e269febb6e4db83a1c75ff8868b42731/contourpy-1.3.2-cp313-cp313t-win_amd64.whl", hash = "sha256:78e9253c3de756b3f6a5174d024c4835acd59eb3f8e2ca13e775dbffe1558f69", size = 238214 },
-]
-
-[[package]]
-name = "cyber-dashboard"
-version = "0.1.0"
-source = { virtual = "." }
-dependencies = [
-    { name = "dotenv" },
-    { name = "httpx" },
-    { name = "logfire" },
-    { name = "matplotlib" },
-    { name = "polars" },
-    { name = "pyarrow" },
-    { name = "ruff" },
-    { name = "streamlit" },
-    { name = "streamlit-extras" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "dotenv", specifier = ">=0.9.9" },
-    { name = "httpx", specifier = ">=0.28.1" },
-    { name = "logfire", specifier = ">=3.24.2" },
-    { name = "matplotlib", specifier = ">=3.10.3" },
-    { name = "polars", specifier = ">=1.31.0" },
-    { name = "pyarrow", specifier = ">=20.0.0" },
-    { name = "ruff", specifier = ">=0.12.4" },
-    { name = "streamlit", specifier = ">=1.47.0" },
-    { name = "streamlit-extras", specifier = ">=0.6.0" },
 ]
 
 [[package]]
@@ -374,6 +386,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/76/66/650a33bd90f786193e4de4b3ad86ea60b53c89b669a5c7be931fac31cdb0/importlib_metadata-8.7.0.tar.gz", hash = "sha256:d13b81ad223b890aa16c5471f2ac3056cf76c5f10f82d6f9292f0b415f389000", size = 56641 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/20/b0/36bd937216ec521246249be3bf9855081de4c5e06a0c9b4219dbeda50373/importlib_metadata-8.7.0-py3-none-any.whl", hash = "sha256:e5dd1551894c77868a30651cef00984d50e1002d06942a7101d34870c5f02afd", size = 27656 },
+]
+
+[[package]]
+name = "isort"
+version = "6.0.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/b8/21/1e2a441f74a653a144224d7d21afe8f4169e6c7c20bb13aec3a2dc3815e0/isort-6.0.1.tar.gz", hash = "sha256:1cb5df28dfbc742e490c5e41bad6da41b805b0a8be7bc93cd0fb2a8a890ac450", size = 821955 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c1/11/114d0a5f4dabbdcedc1125dee0888514c3c3b16d3e9facad87ed96fad97c/isort-6.0.1-py3-none-any.whl", hash = "sha256:2dc5d7f65c9678d94c88dfc29161a320eec67328bc97aad576874cb4be1e9615", size = 94186 },
 ]
 
 [[package]]
@@ -607,6 +628,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/d8/8c/ba6c454ab019d1e24573c68b89a1c4edaad69d4cdf9ed107812802780742/narwhals-1.47.0.tar.gz", hash = "sha256:38238882f3ab2bbc8e7121bc9be951a8a58f1a810bdb14aa2b18792bafac01f8", size = 514799 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a7/c1/1e1109cca762087fd101064c00f576a5a8fa6889d07e70f1efe20205af46/narwhals-1.47.0-py3-none-any.whl", hash = "sha256:8b4ead8866046829de24058d1079e776806bd4aab7d38f55f17c58ce4c0994d2", size = 374667 },
+]
+
+[[package]]
+name = "nodeenv"
+version = "1.9.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/43/16/fc88b08840de0e0a72a2f9d8c6bae36be573e475a6326ae854bcc549fc45/nodeenv-1.9.1.tar.gz", hash = "sha256:6ec12890a2dab7946721edbfbcd91f3319c6ccc9aec47be7c7e6b7011ee6645f", size = 47437 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d2/1d/1b658dbd2b9fa9c4c9f32accbfc0205d532c8c6194dc0f2a4c0428e7128a/nodeenv-1.9.1-py2.py3-none-any.whl", hash = "sha256:ba11c9782d29c27c70ffbdda2d7415098754709be8a7056d79a737cd901155c9", size = 22314 },
 ]
 
 [[package]]
@@ -945,6 +975,19 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/bb/22/f1129e69d94ffff626bdb5c835506b3a5b4f3d070f17ea295e12c2c6f60f/pyparsing-3.2.3.tar.gz", hash = "sha256:b9c13f1ab8b3b542f72e28f634bad4de758ab3ce4546e4301970ad6fa77c38be", size = 1088608 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/05/e7/df2285f3d08fee213f2d041540fa4fc9ca6c2d44cf36d3a035bf2a8d2bcc/pyparsing-3.2.3-py3-none-any.whl", hash = "sha256:a749938e02d6fd0b59b356ca504a24982314bb090c383e3cf201c95ef7e2bfcf", size = 111120 },
+]
+
+[[package]]
+name = "pyright"
+version = "1.1.403"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "nodeenv" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/fe/f6/35f885264ff08c960b23d1542038d8da86971c5d8c955cfab195a4f672d7/pyright-1.1.403.tar.gz", hash = "sha256:3ab69b9f41c67fb5bbb4d7a36243256f0d549ed3608678d381d5f51863921104", size = 3913526 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/49/b6/b04e5c2f41a5ccad74a1a4759da41adb20b4bc9d59a5e08d29ba60084d07/pyright-1.1.403-py3-none-any.whl", hash = "sha256:c0eeca5aa76cbef3fcc271259bbd785753c7ad7bcac99a9162b4c4c7daed23b3", size = 5684504 },
 ]
 
 [[package]]
