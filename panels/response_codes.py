@@ -35,7 +35,7 @@ order by num_seen desc
                 sql=query, min_timestamp=min_datetime, max_timestamp=max_datetime
             )
         )
-        df=df_from_arrow.to_pandas()
+        df = df_from_arrow.to_pandas()
         return df
 
 

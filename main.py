@@ -1,12 +1,9 @@
 import asyncio
+import hmac
+import os
 from datetime import datetime, timedelta
 
 import numpy as np
-import polars as pl
-import hmac
-import os
-from logfire.query_client import AsyncLogfireQueryClient
-from panels.response_codes import get_reponse_codes_table
 import plotly.graph_objects as go
 import streamlit as st
 from streamlit_extras.grid import grid
@@ -21,16 +18,16 @@ users = [u for u in users if u]
 
 
 def check_password():
-
     # Do not require password for non-user-sepcific dashboard.
-    fixed_user=os.environ.get("FIXED_USER", None)
+    fixed_user = os.environ.get("FIXED_USER", None)
     if not fixed_user:
         return True
 
-
     def password_entered():
         # If you use .streamlit/secrets.toml, replace os.environ.get with st.secrets["STREAMLIT_PASSWORD"]
-        if hmac.compare_digest(st.session_state["password"], os.environ.get("FIXED_USER_PASSWORD", "")):
+        if hmac.compare_digest(
+            st.session_state["password"], os.environ.get("FIXED_USER_PASSWORD", "")
+        ):
             st.session_state["password_correct"] = True
             del st.session_state["password"]
         else:
@@ -49,9 +46,9 @@ def check_password():
         st.error("😕 Password incorrect")
     return False
 
+
 if not check_password():
     st.stop()
-
 
 
 st.set_page_config(
@@ -66,12 +63,18 @@ st.title("Compass user dashboard")
 
 col1, col2 = st.columns(2)
 with col1:
-    user_email = st.selectbox(label="email", options=sorted(list(users)), index=2)
+    fixed_user = os.environ.get("FIXED_USER", None)
+    if fixed_user:
+        print("user fixed")
+        options = [fixed_user]
+    else:
+        options = sorted(list(users))
+    user_email = st.selectbox(label="email", options=options, index=0)
 with col2:
     date_range = st.date_input(
         label="Select date range",
         value=[datetime.today() - timedelta(days=14), datetime.today()],
-        help='This is the range of dates you want to get data for.'
+        help="This is the range of dates you want to get data for.",
     )
 st.markdown("---")
 
@@ -112,8 +115,8 @@ if len(date_range) == 2:
     cols[0].subheader("Overall Stats")
     cols[0].dataframe(df_response_codes)
     cols[1].subheader("Endpoint stats")
-    url_path=cols[1].selectbox(label="endpoint", options=distinct_paths)
-    cols[1].dataframe(df_response_codes[df_response_codes.url_path==url_path])
+    url_path = cols[1].selectbox(label="endpoint", options=distinct_paths)
+    cols[1].dataframe(df_response_codes[df_response_codes.url_path == url_path])
 
     st.markdown("---")
     st.subheader("Response times")
