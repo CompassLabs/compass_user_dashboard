@@ -42,6 +42,8 @@ else:
     )
 
     st.title("Compass user dashboard")
+    st.text("Use this dashboard to track your usage of the Compass API.")
+    st.markdown("---")
 
     col1, col2 = st.columns(2)
     with col1:
