@@ -127,7 +127,8 @@ else:
             boxpoints="all",
             jitter=0.5,
             pointpos=0.0,
-            marker_color="green" if p95 < 500 else "red",  # Color of box
+            marker_color="gray",  # Color of box
+            # marker_color="green" if p95 < 500 else "red",  # Color of box
         )
 
         layout = go.Layout(title=None, xaxis=dict(title=f"Overall [ms]"))
@@ -178,7 +179,8 @@ else:
                 boxpoints="all",
                 jitter=0.5,
                 pointpos=0.0,
-                marker_color="green" if p95 < 500 else "red",  # Color of box
+                marker_color="gray",  # Color of box
+                # marker_color="green" if p95 < 500 else "red",  # Color of box
             )
 
             p05 = np.percentile(data, 5)
