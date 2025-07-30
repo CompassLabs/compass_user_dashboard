@@ -29,7 +29,7 @@ if not st.session_state.get("password_correct", False):
             st.error("API key incorrect")
 
     email_input = st.text_input("Email", key="email_input")
-    api_key_input = st.text_input("Password", type="password", key="password")
+    api_key_input = st.text_input("API key", type="password", key="password")
     if api_key_input:
         password_entered(email_input, api_key_input)
 
@@ -73,17 +73,27 @@ else:
             )
             distinct_paths = set(endpoint_stats["url_path"])
 
-        cols = st.columns(4)
-        cols[0].metric("Total requests", df_response_codes.num_seen.sum())
+        cols = st.columns(5)
+        cols[0].metric(
+            "Total requests",
+            df_response_codes.num_seen.sum(),
+            help="Total requests the user has sent. Including both successful and unsuccesful ones.",
+        )
         cols[1].metric(
-            "Error rate",
-            f"{round(df_response_codes[df_response_codes.response_code != 200].num_seen.sum() / df_response_codes.num_seen.sum() * 100, 1)} %",
+            "400 Error rate",
+            f"{round(df_response_codes[(df_response_codes.response_code > 399) & (df_response_codes.response_code < 500)].num_seen.sum() / df_response_codes.num_seen.sum() * 100, 1)} %",
+            help="These are errors relating to bad requests. For example not following the endpoint specification. Also requests that are impossible, e.g. transferring tokens the user does not have.",
+        )
+        cols[2].metric(
+            "500 Error rate",
+            f"{round(df_response_codes[df_response_codes.response_code > 499].num_seen.sum() / df_response_codes.num_seen.sum() * 100, 1)} %",
+            help="These are server errors occuring on Compass Labs side.",
         )
         data = np.concatenate(durations["durations"].values)
         p90 = np.percentile(data, 90)
         p50 = np.percentile(data, 50)
-        cols[2].metric("90 percentile response time", f"{int(p90)} ms")
-        cols[3].metric("50 percentile response time", f"{int(p50)} ms")
+        cols[3].metric("90 percentile response time", f"{int(p90)} ms")
+        cols[4].metric("50 percentile response time", f"{int(p50)} ms")
         # cols[3].metric(
         #     "Total cost",
         #     f"{df_response_codes[df_response_codes.response_code == '200'].num_seen.sum() * 0.50} $",
