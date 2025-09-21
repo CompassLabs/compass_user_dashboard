@@ -54,7 +54,7 @@ else:
     with col2:
         date_range = st.date_input(
             label="Select date range",
-            value=[datetime.today() - timedelta(days=14), datetime.today()],
+            value=[datetime.today() - timedelta(days=30), datetime.today()],
             help="This is the range of dates you want to get data for.",
         )
     st.markdown("---")

@@ -35,7 +35,7 @@ ORDER BY url_path
                 sql=query,
                 min_timestamp=min_datetime,
                 max_timestamp=max_datetime,
-                limit=500,
+                limit=10000,
             )
         )
         df = df_from_arrow.to_pandas()
@@ -50,7 +50,7 @@ if __name__ == "__main__":
         get_distinct_paths(
             datetime.today() - timedelta(days=31),
             datetime.now(),
-            "conor@compasslabs.ai",
+            "zhimao@cybertinolab.com",
         )
     )
     print(result)
